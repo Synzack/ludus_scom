@@ -77,7 +77,7 @@
 - name: Grant Push Account Local Admin Over Target Host(s)
   ansible.windows.win_shell: |
     Invoke-Command -ComputerName "{{ item }}" -ScriptBlock {
-      net localgroup Administrators "{{ ludus_domain_netbios_name }}\{{ scom_push_install_account }}" /add
+      net localgroup (Gwmi win32_group -Filter "SID='S-1-5-32-544'").Name "{{ ludus_domain_netbios_name }}\{{ scom_push_install_account }}" /add
     } 
   vars:
     ansible_become: true
