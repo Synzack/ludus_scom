@@ -5,9 +5,14 @@
     state: started
     start_mode: auto
 
+- name: Gather local admins group name multilingual
+  ansible.windows.win_shell: |
+    (Gwmi win32_group -Filter "SID='S-1-5-32-544'").Name
+  register: localadmin_group_name
+
 - name: Add SCOMAdmins Group as Local Administrator
   ansible.windows.win_group_membership:
-    name: Administrators
+    name: "{{ (localadmin_group_name.stdout|split('\n'))[0]|trim }}" # Administrators
     members:
       - '{{ ludus_domain_netbios_name }}\{{ scom_admin_group }}'
     state: present
