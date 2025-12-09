@@ -35,7 +35,6 @@
 - name: Reboot if SQL Server installation requires it
   ansible.windows.win_reboot:
   when: 
-  when: 
     - install_sql is defined
     - install_sql.stdout is defined
     - "'One or more affected files have operations pending' in install_sql.stdout"
